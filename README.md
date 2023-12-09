@@ -50,7 +50,7 @@ Tehditlerimizin en büyüğü, pedagojik olarak herhangi bir desteğimizin mevcu
 ## İndirme
 
 Projeyi indirmek için build dosyasının içerisindeki, apk'yı telefonunuza indirmeniz yeterli. 
-Katkı sunmak için projeyi, indirmek isterseniz de;
+Katkı sunmak için, projeyi indirmek isterseniz de;
 
 ```bash
   git clone https://github.com/Abandoned-Pirates/PickupGame.git
