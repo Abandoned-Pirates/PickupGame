@@ -27,11 +27,11 @@ public class SoundManager : MonoBehaviour
 
         foreach (AudioClip soundFile in soundFiles)
         {
-            string dosyaAdi = soundFile.name;
+            string fileName = soundFile.name;
 
-            string yeniDosyaAdi = prefix + dosyaAdi + postfix;
+            string newFileName = prefix + fileName + postfix;
 
-            sounds.Add(dosyaAdi, soundFile);
+            sounds.Add(fileName, soundFile);
         }
 
         return sounds;
