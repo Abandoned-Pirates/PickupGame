@@ -28,18 +28,10 @@ public class SpawnManager : MonoBehaviour
 
     public ARRaycastManager raycastManager;
     public ARPlaneManager planeManager;
-    private List<ARRaycastHit> hits = new List<ARRaycastHit>();
+    private Pose placementPose;
+    public Camera ARCam;
+    //private List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
-    //[SerializeField]
-    //Transform[] spawnLocations;
-
-    [Header("Max-Min Values")]
-    private float minX = -2.5f;
-    private float maxX = 2.5f;
-    private float minY = 5.5f;
-    private float maxY = 9.5f;
-    private float minZ = -2.5f;
-    private float maxZ = 2.5f;
 
     public void SpawnItems()
     {
@@ -52,18 +44,36 @@ public class SpawnManager : MonoBehaviour
              Instantiate(cubePrefab, spawnLocation.position,Quaternion.identity);
          }
     }
+    void SpawnTreeWithTouch()
+    {
+        var screenCenter = ARCam.ViewportToScreenPoint(new Vector3(0.5f,0.5f));
+        var hits = new List<ARRaycastHit>();
+        raycastManager.Raycast(screenCenter, hits,TrackableType.Planes);
+        if (hits.Count>0)
+        {
+            placementPose = hits[0].pose;
+            var cameraForward = Camera.main.transform.forward;
+            var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
+        }
+
+    }
+    public void ShowTreeModel()
+    {
+        Instantiate(treePrefab,placementPose.position,placementPose.rotation);
+    }
     void SpawnTree()
     {
         List<ARPlane> planes = new List<ARPlane>();
         foreach (var plane in planeManager.trackables)
         {
             planes.Add(plane);
-        }
+        } 
 
         if (planes.Count > 0)
         {
             Vector3 center = planes[0].transform.position;
-            spawnedTree = Instantiate(treePrefab, center, Quaternion.identity).GetComponent<Tree>();
+            GameObject go = Instantiate(treePrefab, center, Quaternion.identity, planes[0].transform);
+            spawnedTree = go.GetComponent<Tree>();
             cubeNameText.text = "Tree Spawned";
             return;
         }
@@ -81,9 +91,9 @@ public class SpawnManager : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hit))
                 {
-                    if (hit.collider.CompareTag("Cube"))
+                    if (hit.collider.CompareTag("Fruit"))
                     {
-                        cubeNameText.text = hit.collider.name;
+                        FruitControlManager.instance.SetFruitAmount(hit.collider.gameObject.GetComponent<Fruit>().fruit);
                     }
                 }
             }
@@ -91,7 +101,7 @@ public class SpawnManager : MonoBehaviour
     }
     void Update()
     {
-        if (spawnedTree == null) { SpawnTree(); }
+        //if (spawnedTree == null) { SpawnTree(); }
         //SpawnItems();
         CollectItems();
     }
