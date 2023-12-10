@@ -19,64 +19,32 @@ public class SpawnManager : MonoBehaviour
     }
 
     public GameObject cubePrefab;
-    private GameObject currentCube;
-
-
     [SerializeField] private GameObject treePrefab;
     private Tree spawnedTree;
     public TextMeshProUGUI cubeNameText;
 
     public ARRaycastManager raycastManager;
     public ARPlaneManager planeManager;
-    private Pose placementPose;
     public Camera ARCam;
+    [SerializeField] private Transform indicator;
     //private List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
 
     public void SpawnItems()
     {
-         if (spawnedTree == null)
-         {
-             return;
-         }
-         foreach (var spawnLocation in spawnedTree.spawnLocations)
-         {
-             Instantiate(cubePrefab, spawnLocation.position,Quaternion.identity);
-         }
-    }
-    void SpawnTreeWithTouch()
-    {
-        var screenCenter = ARCam.ViewportToScreenPoint(new Vector3(0.5f,0.5f));
-        var hits = new List<ARRaycastHit>();
-        raycastManager.Raycast(screenCenter, hits,TrackableType.Planes);
-        if (hits.Count>0)
+        if (spawnedTree == null)
         {
-            placementPose = hits[0].pose;
-            var cameraForward = Camera.main.transform.forward;
-            var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
-        }
-
-    }
-    public void ShowTreeModel()
-    {
-        Instantiate(treePrefab,placementPose.position,placementPose.rotation);
-    }
-    void SpawnTree()
-    {
-        List<ARPlane> planes = new List<ARPlane>();
-        foreach (var plane in planeManager.trackables)
-        {
-            planes.Add(plane);
-        } 
-
-        if (planes.Count > 0)
-        {
-            Vector3 center = planes[0].transform.position;
-            GameObject go = Instantiate(treePrefab, center, Quaternion.identity, planes[0].transform);
-            spawnedTree = go.GetComponent<Tree>();
-            cubeNameText.text = "Tree Spawned";
             return;
         }
+        foreach (var spawnLocation in spawnedTree.spawnLocations)
+        {
+            Instantiate(cubePrefab, spawnLocation.position, Quaternion.identity);
+        }
+    }
+
+    public void ShowTreeModel()
+    {
+        Instantiate(treePrefab, indicator.position, Quaternion.identity);
     }
 
     void CollectItems()
@@ -98,11 +66,5 @@ public class SpawnManager : MonoBehaviour
                 }
             }
         }
-    }
-    void Update()
-    {
-        //if (spawnedTree == null) { SpawnTree(); }
-        //SpawnItems();
-        CollectItems();
     }
 }

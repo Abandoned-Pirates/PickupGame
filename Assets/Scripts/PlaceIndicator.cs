@@ -6,16 +6,16 @@ using UnityEngine.XR.ARSubsystems;
 
 public class PlaceIndicator : MonoBehaviour
 {
+    GameObject indicatorObject;
     private ARRaycastManager raycastManager;
-    private GameObject indicator;
     private List<ARRaycastHit> hits=new List<ARRaycastHit>();
 
     // Start is called before the first frame update
     void Start()
     {
-        raycastManager = FindObjectOfType<ARRaycastManager>();
-        indicator = transform.GetChild(0).gameObject;
-        indicator.SetActive(false);
+        raycastManager = FindAnyObjectByType<ARRaycastManager>();
+        indicatorObject = transform.GetChild(0).gameObject;
+        indicatorObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -28,9 +28,9 @@ public class PlaceIndicator : MonoBehaviour
             transform.position= hitPose.position; 
             transform.rotation= hitPose.rotation;
 
-            if (!indicator.activeInHierarchy)
+            if (!indicatorObject.activeInHierarchy)
             {
-                indicator.SetActive(true);
+                indicatorObject.SetActive(true);
             }
         }
     }
