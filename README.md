@@ -35,6 +35,7 @@ Tehditlerimizin en büyüğü, pedagojik olarak herhangi bir desteğimizin mevcu
 - 🥷🏼 [@Ömer Fatih Aslan - 200541050](https://www.github.com/omrfth23)
 - 🥷🏼 [@Ahmet Taner Atilla  - 200541068](https://www.github.com/atilaahmettaner)
 - 🥷🏼 [@Ahmet Enes Ateşsoy - 190541046](https://www.github.com/atessoy)
+- 🥷🏼 [@Muhammed Onur Kaya - 200541001](https://github.com/onurkya7)
 
 
 
